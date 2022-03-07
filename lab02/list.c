@@ -21,14 +21,24 @@ void append_node (node** head_ptr, int new_data) {
 /* Reverse a linked list in place (in other words, without creating a new list).
    Assume that head_ptr is non-null. */
 void reverse_list (node** head_ptr) {
-	node* prev = NULL;
-	node* curr = *head_ptr;
-	node* next = NULL;
+    if(head_ptr==NULL){
+        printf("Empty head_ptr");
+        return;
+    }
+
+    node* prev = NULL;
+    node* curr = *head_ptr;
+    node* next = curr->next;
 	while (curr != NULL) {
-		/* INSERT CODE HERE */
+        prev=curr;
+        curr=next;
+        if(next!=NULL){
+            next=next->next;
+        }
+        curr->next=prev;
 	}
 	/* Set the new head to be what originally was the last node in the list */
-	*head_ptr = /* INSERT CODE HERE */
+	*head_ptr = prev; /* INSERT CODE HERE */
 }
 
 
