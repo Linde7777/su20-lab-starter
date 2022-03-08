@@ -74,7 +74,7 @@ vector_t *vector_new() {
        what do you need to do? */
     //TODO ? realloc?
     retval->size = 1;
-    retval->data[0] = 0;
+    retval->data=(int*)malloc(sizeof(int));
 
     /* Check the data attribute of our vector to make sure we got memory */
     if (retval->data==NULL) {
@@ -87,7 +87,7 @@ vector_t *vector_new() {
 
     /* Complete the initialization by setting the single component to zero */
     //TODO ?
-    retval->data = 0;
+    retval->data[0] = 0;
 
     /* and return... */
     return retval;
@@ -105,7 +105,7 @@ int vector_get(vector_t *v, size_t loc) {
     /* If the requested location is higher than we have allocated, return 0.
      * Otherwise, return what is in the passed location.
      */
-    if (loc < v->size) {
+    if (loc <= v->size) {
         return v->data[loc];
     } else {
         return 0;
@@ -126,7 +126,8 @@ void vector_set(vector_t *v, size_t loc, int value) {
      * allocated?  Remember that unset locations should contain a value of 0.
      */
     if(loc > v->size){
-        v->data=(int*)realloc(v->data,loc*sizeof(int))
+        v->data=(int*)realloc(v->data,loc*sizeof(int));
+        v->size=loc;
     }
 
     v->data[loc]=value;
