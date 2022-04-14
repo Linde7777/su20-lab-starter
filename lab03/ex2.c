@@ -10,7 +10,7 @@ int main() {
     int sum = 0;
     for (k = 0; source[k] != 0; k++) {
         dest[k] = fun(source[k]);
-        sum += dest[k];
+        sum += dest[k];//add sum,sum,t3(s2)
     }
     return sum;
 }
