@@ -25,12 +25,12 @@ factorial:
     
     beq a0,x0,label1
 label1:
-    a0=0
+    addi a0,x0,0
     jr ra
 
     beq a0,1,label2
 label2:
-    a0=1
+    addi a0,x0,1
     jr ra
 
     addi t1,x0,0    #num1
@@ -46,11 +46,11 @@ loop:
     jal x0,loop
 
 label3:
-    mv a0,total         #a0=total
+    mv a0,t3            #a0=total
     jr ra
 
 
-###
+/*
 if(n==0) return 0
 if(n==1) return 1
 int num1=0
@@ -62,4 +62,5 @@ for(int i=2;i<=n;i++){
     num2=total;
 }
 return total
-###
+
+*/
