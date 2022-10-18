@@ -1,15 +1,23 @@
 Exercise 1
 	Scenario 1
-		1. 
-		2.
-		3.
+		1. steps size in byte(8*4) is exactly equal to cache size in byte(8*4)
+		2. increasing Rep Count will not change anything because the step size 
+		in byte is bigger than block size. The requested address always plus 32
+		which casue the index are always 00(point to the first block) and tag are 
+		always different(which cause a miss)
+		3. change step size to 1(so step size in byte is 4 which is half the block size,
+		when address point to the next location, tag and index will not changed)
 
 	Scenario 2
-		1.
-		2.
-		3.
-		4.
-		5.
+		1. 2 accesses, 1 lw, 1 sw
+		2. addr1: lw miss sw miss | addr2: lw hit sw hit
+		3. addr1 and addr2 are belong to the same block, addr1 is compulsory miss
+		4. hit rate will close to 1, because the cache size is equal to array size
+		the hit rate for the second repetition is 1
+		5. let's say the cache can hold 64 array elements, and array size is 1000, 
+		we will repeat iterate the hold array 5 times.
+		At first we iterate arr[0]~arr[63] 5 times, then iterate arr[64]~arr[127] 5 times,
+		we will repeat this pattern untill we iterate all elements.
 
 	Scenario 3
 		1.
