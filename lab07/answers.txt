@@ -35,16 +35,28 @@ Exercise 1
 		>= array size in byte or whether repCount is > 1, it will increase hit rate.
 
 Exercise 2
-	ijk:
-	ikj:
-	jik:
-	jki:
-	kij:
-	kji:
+	ijk: 1.430 Gflop/s
+	ikj: 0.133 Gflop/s
+	jik: 1.478 Gflop/s
+	jki: 9.730 Gflop/s
+	kij: 0.134 Gflop/s
+	kji: 8.976 Gflop/s
 
-	1.
-	2.
-	3.
+	1. jki order, it has the biggest number of Gflop/s
+	2. ikj order, it has the smallest number of Gflop/s
+	3. in jki order, increment i:
+	moves through B with stride 0
+	moves through A with stride 1
+	moves through C with stride 1
+	this order utlize spatial locality
+
+	in ikj order, increment j:
+	moves through B with stride n
+	moves through A with stride 0
+	moves through C with stride n
+	this order utlize no spatial locality
+
+
 
 Exercise 3
 	Part 1
