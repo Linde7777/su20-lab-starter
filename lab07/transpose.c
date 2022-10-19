@@ -22,6 +22,13 @@ void transpose_blocking(int n, int blocksize, int *dst, int *src) {
   int yBound = blocksize;
   int yRepBound = n / blocksize;
   int xRepBound = n / blocksize;
+
+  /* dealing with the case when n is not 
+   * multiple of the block size.
+   * for better understanding, you can assume
+   * n is multiple of the block size and ignore
+   * the 'if statement' below.
+   */
   if (n % blocksize != 0) {
     yRepBound += 1;
     xRepBound += 1;
@@ -30,6 +37,12 @@ void transpose_blocking(int n, int blocksize, int *dst, int *src) {
   for (int yRep = 0; yRep < yRepBound; yRep++) {
     for (int xRep = 0; xRep < xRepBound; xRep++) {
 
+      /* dealing with the case when n is not 
+       * multiple of the block size.
+       * for better understanding, you can assume
+       * n is multiple of the block size and ignore
+       * the 'if statement' below
+       */
       if (n % blocksize != 0) {
         if (n - xStart < blocksize) {
           xBound = xStart + n - xStart;
@@ -38,6 +51,7 @@ void transpose_blocking(int n, int blocksize, int *dst, int *src) {
           yBound = yStart + n - yStart;
         }
       }
+      
       for (int y = yStart; y < yBound; y++) {
         for (int x = xStart; x < xBound; x++) {
           dst[y + x * n] = src[x + y * n];
