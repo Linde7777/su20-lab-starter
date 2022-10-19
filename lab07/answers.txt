@@ -20,11 +20,19 @@ Exercise 1
 		we will repeat this pattern untill we iterate all elements.
 
 	Scenario 3
-		1.
-		2.
-		3.
-		4.
-		5.
+		1. 0.5 0 0.25
+		2. 32 16
+		3. 16, when L1 miss, we came to the L2, there are 16 miss in L1
+		so there is 16 accesses in L2
+		4. increasing repCount, because array size in byte(128) is equal to L2 size in byte
+		which mean all the array element can be stored in L2 after first interation
+		be finished
+		5. If we increase the number of block in L1 
+		which casue L1 size in byte is bigger or equal to array size,
+		and the repCount is greater than 1,
+		the hit rate will increase, otherwise, the hit rate will not be changed.
+		If we increase block size, no matter if it cause L1 size in byte 
+		>= array size in byte or whether repCount is > 1, it will increase hit rate.
 
 Exercise 2
 	ijk:
