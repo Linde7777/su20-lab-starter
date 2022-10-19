@@ -16,41 +16,43 @@ void transpose_naive(int n, int blocksize, int *dst, int *src) {
 /* Implement cache blocking below. You should NOT assume that n is a
  * multiple of the block size. */
 void transpose_blocking(int n, int blocksize, int *dst, int *src) {
-  int xRepBound = n / blocksize;
-  int yRepBound = n / blocksize;
-  // if n==5, blocksize=2, we should repeat 3 times instead of 2
-  // FYI read line 32
-  if (n % blocksize != 0) {
-    xRepBound += 1;
-    yRepBound += 1;
-  }
   int xStart = 0;
   int yStart = 0;
   int xBound = blocksize;
   int yBound = blocksize;
+  int yRepBound = n / blocksize;
+  int xRepBound = n / blocksize;
+  if (n % blocksize != 0) {
+    yRepBound += 1;
+    xRepBound += 1;
+  }
 
-  for (int xRep = 0; xRep < xRepBound; xRep++) {
-    for (int yRep = 0; yRep < yRepBound; yRep++) {
-      /* if n is not multiple of blocksize
-       * we need to deal with the rest.
-       * let's say n==11 blocksize==3
-       * when xStart==9, the xBound should be 2 instead of
-       * 3(blocksize)
-       */
-      if (n - xStart + 1 == blocksize) {
-        xBound = n - xStart + 1;
-      }
-      for (int x = xStart; x < xBound; x++) {
-        if (n - yStart + 1 == blocksize) {
-          yBound = n - yStart + 1;
+  for (int yRep = 0; yRep < yRepBound; yRep++) {
+    for (int xRep = 0; xRep < xRepBound; xRep++) {
+
+      if (n % blocksize != 0) {
+        if (n - xStart < blocksize) {
+          xBound = xStart + n - xStart;
         }
-        for (int y = yStart; y < yBound; y++) {
+        if (n - yStart < blocksize) {
+          yBound = yStart + n - yStart;
+        }
+      }
+      for (int y = yStart; y < yBound; y++) {
+        for (int x = xStart; x < xBound; x++) {
           dst[y + x * n] = src[x + y * n];
         }
-        yStart += blocksize;
       }
+      // after finish dealing with an area, move to the right
       xStart += blocksize;
+      xBound += blocksize;
     }
+    // we have finished dealing with a row, now move to the next row
+    yStart += blocksize;
+    yBound += blocksize;
+    // set the starter point to the leftmost position
+    xStart = 0;
+    xBound = blocksize;
   }
 }
 
