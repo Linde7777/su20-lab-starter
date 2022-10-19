@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <sys/types.h>
 #include <time.h>
 
 /* The naive transpose function as a reference. */
@@ -15,20 +16,41 @@ void transpose_naive(int n, int blocksize, int *dst, int *src) {
 /* Implement cache blocking below. You should NOT assume that n is a
  * multiple of the block size. */
 void transpose_blocking(int n, int blocksize, int *dst, int *src) {
-  // YOUR CODE HERE
+  int xRepBound = n / blocksize;
+  int yRepBound = n / blocksize;
+  // if n==5, blocksize=2, we should repeat 3 times instead of 2
+  // FYI read line 32
+  if (n % blocksize != 0) {
+    xRepBound += 1;
+    yRepBound += 1;
+  }
   int xStart = 0;
   int yStart = 0;
-  for (int xRep = 0; xRep < n / blocksize; xRep++) {
-    for (int yRep = 0; yRep < n / blocksize; yRep++) {
-      for (int x = xStart; x < blocksize; x++) {
-        for (int y = yStart; y < blocksize; y++) {
+  int xBound = blocksize;
+  int yBound = blocksize;
+
+  for (int xRep = 0; xRep < xRepBound; xRep++) {
+    for (int yRep = 0; yRep < yRepBound; yRep++) {
+      /* if n is not multiple of blocksize
+       * we need to deal with the rest.
+       * let's say n==11 blocksize==3
+       * when xStart==9, the xBound should be 2 instead of
+       * 3(blocksize)
+       */
+      if (n - xStart + 1 == blocksize) {
+        xBound = n - xStart + 1;
+      }
+      for (int x = xStart; x < xBound; x++) {
+        if (n - yStart + 1 == blocksize) {
+          yBound = n - yStart + 1;
+        }
+        for (int y = yStart; y < yBound; y++) {
           dst[y + x * n] = src[x + y * n];
         }
-        yStart+=blocksize;
+        yStart += blocksize;
       }
-      xStart+=blocksize;
+      xStart += blocksize;
     }
-
   }
 }
 
