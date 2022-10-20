@@ -45,10 +45,10 @@ void transpose_blocking(int n, int blocksize, int *dst, int *src) {
        */
       if (n % blocksize != 0) {
         if (n - xStart < blocksize) {
-          xBound = xStart + n - xStart;
+          xBound = xStart + (n - xStart);
         }
         if (n - yStart < blocksize) {
-          yBound = yStart + n - yStart;
+          yBound = yStart + (n - yStart);
         }
       }
       
