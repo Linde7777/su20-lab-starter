@@ -109,4 +109,4 @@ Exercise 3
 		utlize spatial locality, when the block size is half the n,
 		the difference between optimizated implementation and naive implementation
 		became smaller.
-		As for the performance become bad when blocksize increase to 5000, I don't know why.
+		The block size is too big, L1 cache can't hold it.
