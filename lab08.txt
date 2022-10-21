@@ -24,6 +24,7 @@ VPN PPN                 VPN     PPN    Valid
 3   3                   3       3       1
 
 then we access address 0d4 0d0:
+
 TLB                     Page Table
 VPN PPN                 VPN     PPN    Valid
 --------------------------------------------
@@ -51,3 +52,7 @@ Not utilizing temporal locality
 
 3.1
 increase the size of physical memory
+
+4.1
+There are 4 process, when switch to the next process, the TLB will
+be cleaned out.
