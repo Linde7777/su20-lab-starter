@@ -1,0 +1,53 @@
+1.1 
+32 Byte
+
+1.2 
+TLB hits:2  TLB misses:8
+
+1.3 
+no page hit. 
+In my opinion, if we want to get a page hit, 
+the number of physical frame must bigger than the number of TLB slot.
+Imagine such scenario:
+number of TLB slot: 4
+infinite physical memory(which mean infinite physical frame)
+
+we walk through addresses: 0d0 0d1 0d2 0d3 
+(just for the convenience, the address in reality is not in decimal)
+
+TLB                     Page Table
+VPN PPN                 VPN     PPN    Valid
+--------------------------------------------
+0   0                   0       0       1
+1   1                   1       1       1
+2   2                   2       2       1
+3   3                   3       3       1
+
+then we access address 0d4 0d0:
+TLB                     Page Table
+VPN PPN                 VPN     PPN    Valid
+--------------------------------------------
+4   4                   0       0       1
+0   0                   1       1       1
+2   2                   2       2       1
+3   3                   3       3       1
+                        4       4       1
+
+you see, when access 0d0, TLB miss but page table hit
+
+1.4 
+Virtual address is dividend into 2 parts: VPN and offset, 
+VPN is specified by the number of page, offset is specified 
+by the size of a page, same for physical address.
+Cache send virtual address to TLB, if it exists in TLB,
+then TLB hit, otherwise TLB will look into page table, 
+if it exists in page table, then page hit and it is returned 
+to TLB, if not, page table will load a physical page into memory,
+then generate a PPN, then return it to TLB.
+
+2.1
+00 20 40 60 80 A0 C0 E0 00 20
+Not utilizing temporal locality
+
+3.1
+increase the size of physical memory
