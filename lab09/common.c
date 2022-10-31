@@ -135,13 +135,13 @@ long long int sum_simd_unrolled(unsigned int vals[NUM_ELEMS]) {
         tempResult0[0] += vals[i];
       }
     }
+    for (int j = 0; j < 4; j++) {
+      result += tempResult0[j];
+    }
 
     _mm_storeu_si128((__m128i *)tempResult1, formerValues1);
     _mm_storeu_si128((__m128i *)tempResult2, formerValues2);
     _mm_storeu_si128((__m128i *)tempResult3, formerValues3);
-    for (int j = 0; j < 4; j++) {
-      result += tempResult0[j];
-    }
     for (int j = 0; j < 4; j++) {
       result += tempResult1[j];
     }
@@ -151,7 +151,6 @@ long long int sum_simd_unrolled(unsigned int vals[NUM_ELEMS]) {
     for (int j = 0; j < 4; j++) {
       result += tempResult3[j];
     }
-
   }
   clock_t end = clock();
   printf("Time taken: %Lf s\n", (long double)(end - start) / CLOCKS_PER_SEC);
