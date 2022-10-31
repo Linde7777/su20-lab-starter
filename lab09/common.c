@@ -58,29 +58,29 @@ long long int sum_simd(unsigned int vals[NUM_ELEMS]) {
   long long int result = 0; // This is where you should put your final result!
   /* DO NOT DO NOT DO NOT DO NOT WRITE ANYTHING ABOVE THIS LINE. */
 
+  int tempResult[4];
   for (unsigned int w = 0; w < OUTER_ITERATIONS; w++) {
     /* YOUR CODE GOES HERE */
-    __m128i formerValues = _mm_setzero_si128();
-    __m128i currentValues;
     unsigned int i;
+    __m128i formerValues = _mm_setzero_si128();
     for (i = 0; i < NUM_ELEMS / 4 * 4; i += 4) {
-      currentValues = _mm_loadu_si128((__m128i *)vals + i);
+      __m128i currentValues = _mm_loadu_si128((__m128i *)(vals + i));
       __m128i cmp = _mm_cmpgt_epi32(currentValues, _127);
       // if vectorValues > _127, its values wouldn't be changed
       currentValues = _mm_and_si128(currentValues, cmp);
-      currentValues = _mm_add_epi32(currentValues, formerValues);
-      formerValues = currentValues;
+      formerValues = _mm_add_epi32(currentValues, formerValues);
     }
 
     /* You'll need a tail case. */
-    int *tempResult = (int *)malloc(sizeof(int) * 4);
     _mm_storeu_si128((__m128i *)tempResult, formerValues);
     for (; i < NUM_ELEMS; i++) {
-      *tempResult += *(vals + i);
+      if (vals[i] >= 128) {
+        tempResult[0] += vals[i];
+      }
     }
 
-    for (int i = 0; i < 4; i++) {
-      result += *(tempResult + i);
+    for (int j = 0; j < 4; j++) {
+      result += tempResult[j];
     }
   }
   clock_t end = clock();
