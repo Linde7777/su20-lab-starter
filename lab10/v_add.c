@@ -19,10 +19,8 @@ void v_add_optimized_adjacent(double* x, double* y, double* z) {
     {
         int thread_num=omp_get_num_threads();
         int thread_ID = omp_get_thread_num();
-        for (int i = 0; i < ARRAY_SIZE; i++) {
-            if(i%thread_num==thread_ID){
+        for (int i = thread_ID; i < ARRAY_SIZE; i+=thread_num) {
                 z[i] = x[i] + y[i];
-            }
         }
     }
 }
@@ -33,16 +31,16 @@ void v_add_optimized_chunks(double* x, double* y, double* z) {
     {
         int thread_num=omp_get_num_threads();
         int thread_ID = omp_get_thread_num();
-        int parallel_size=ARRAY_SIZE/thread_num*thread_num;
-        for (int i = 0; i < parallel_size; i++){
-            if(i/parallel_size==thread_ID){
-                z[i] = x[i] + y[i];
-            }
+        int chunk_size=ARRAY_SIZE/thread_num;
+        int left_boundary=thread_ID*chunk_size;
+        int right_boundary=left_boundary+chunk_size;
+
+        for(int i=left_boundary;i<right_boundary;i++){
+            z[i] = x[i] + y[i];
         }
-        for(int i=parallel_size;i<ARRAY_SIZE;i++){
-            if(thread_ID==0){
-                z[i] = x[i] + y[i];
-            }
+
+        for(int i=chunk_size*thread_num;i<ARRAY_SIZE;i++){
+            z[i] = x[i] + y[i];
         }
 
     }
