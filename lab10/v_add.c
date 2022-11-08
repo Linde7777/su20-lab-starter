@@ -39,8 +39,10 @@ void v_add_optimized_chunks(double* x, double* y, double* z) {
             z[i] = x[i] + y[i];
         }
 
-        for(int i=chunk_size*thread_num;i<ARRAY_SIZE;i++){
-            z[i] = x[i] + y[i];
+        if(thread_ID==0){
+            for(int i=chunk_size*thread_num;i<ARRAY_SIZE;i++){
+                z[i] = x[i] + y[i];
+            }
         }
 
     }
